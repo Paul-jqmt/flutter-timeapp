@@ -1,33 +1,32 @@
-part of 'time.dart';
+import 'package:flutter_application_1/modules/preferences.dart';
+import 'package:flutter_application_1/pages/time.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
-class TimeAdapter extends TypeAdapter<SelectedTimezone> {
+class PreferenceAdapter extends TypeAdapter<Preference> {
   @override
-  final int typeId = 1;
+  final int typeId = 2;
 
   @override
-  SelectedTimezone read(BinaryReader reader) {
+  Preference read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
 
-    return SelectedTimezone(
-      offset: fields[0],
-      mainCity: fields[1],
-      code: fields[2],
+    return Preference(
+      darkMode: fields[0],
+      armyTime: fields[1],
     );
   }
 
   @override
-  void write(BinaryWriter writer, SelectedTimezone obj) {
+  void write(BinaryWriter writer, Preference obj) {
     writer
-      ..writeByte(2)
-      ..writeByte(0)
-      ..write(obj.offset)
       ..writeByte(1)
-      ..write(obj.mainCity)
-      ..writeByte(2)
-      ..write(obj.code);
+      ..writeByte(0)
+      ..write(obj.darkMode)
+      ..writeByte(1)
+      ..write(obj.armyTime);
   }
 
   @override
