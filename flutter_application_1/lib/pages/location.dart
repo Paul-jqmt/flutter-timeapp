@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_application_1/pages/boxes.dart';
+import 'package:flutter_application_1/pages/time.dart';
 import 'package:flutter_application_1/pages/timezone.dart';
 import 'dart:convert';
 
@@ -11,43 +13,56 @@ class Location extends StatefulWidget {
 }
 
 class _LocationState extends State<Location> {
-  Widget timezoneTemplate(timezone) {
+  Widget timezoneTemplate(Timezone timezone) {
     return SizedBox(
       width: 200,
-      child: Card(
-        margin: const EdgeInsets.fromLTRB(16, 16, 16, 0),
-        color: Colors.blue[600],
-        child: Container(
-            padding: const EdgeInsets.all(10.0),
-            margin: const EdgeInsets.all(5.0),
-            child: Column(
-              children: [
-                Text(
-                  timezone.offset,
-                  style: const TextStyle(
-                    fontSize: 18,
-                    color: Colors.white,
+      child: InkWell(
+        onTap: () {
+          boxTime.putAt(
+              0,
+              SelectedTimezone(
+                offset: timezone.offset,
+                mainCity: timezone.mainCity,
+                code: timezone.code,
+              ));
+
+          Navigator.of(context).pop();
+        },
+        child: Card(
+          margin: const EdgeInsets.fromLTRB(16, 16, 16, 0),
+          color: Colors.blue[600],
+          child: Container(
+              padding: const EdgeInsets.all(10.0),
+              margin: const EdgeInsets.all(5.0),
+              child: Column(
+                children: [
+                  Text(
+                    timezone.offset,
+                    style: const TextStyle(
+                      fontSize: 18,
+                      color: Colors.white,
+                    ),
                   ),
-                ),
-                const SizedBox(
-                  height: 6,
-                ),
-                Text(
-                  timezone.mainCity,
-                  style: const TextStyle(
-                    fontSize: 18,
-                    color: Colors.white,
+                  const SizedBox(
+                    height: 6,
                   ),
-                ),
-                Text(
-                  timezone.code,
-                  style: const TextStyle(
-                    fontSize: 18,
-                    color: Colors.white,
+                  Text(
+                    timezone.mainCity,
+                    style: const TextStyle(
+                      fontSize: 18,
+                      color: Colors.white,
+                    ),
                   ),
-                ),
-              ],
-            )),
+                  Text(
+                    timezone.code,
+                    style: const TextStyle(
+                      fontSize: 18,
+                      color: Colors.white,
+                    ),
+                  ),
+                ],
+              )),
+        ),
       ),
     );
   }
@@ -85,8 +100,9 @@ class _LocationState extends State<Location> {
           child: items.isEmpty
               ? const CircularProgressIndicator()
               : ListView(
-                  children:
-                      items.map((item) => timezoneTemplate(item)).toList(),
+                  children: items
+                      .map((Timezone item) => timezoneTemplate(item))
+                      .toList(),
                 ),
         ),
       ),
