@@ -57,7 +57,7 @@ class _MyWidgetState extends State<MyWidget> {
     return Scaffold(
       backgroundColor: Colors.deepPurple[900],
       appBar: AppBar(
-        title: Text('Current time Application !'),
+        title: const Text('Current time Application !'),
         backgroundColor: Colors.indigo,
         foregroundColor: Colors.white,
       ),

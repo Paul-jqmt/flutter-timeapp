@@ -17,14 +17,15 @@ class _HomeState extends State<Home> {
   int currentIndex = 0;
   String timeDisplay = '';
   SelectedTimezone selectedTimezone = SelectedTimezone(
-    offset: 'UTC ${DateTime.now().timeZoneOffset.toString()}',
+    offset: DateTime.now().toLocal().timeZoneOffset.toString(),
     mainCity: '',
-    code: DateTime.now().timeZoneName,
+    code: DateTime.now().toLocal().timeZoneName,
   );
 
   @override
   void initState() {
-    timeDisplay = DateFormat('Hm').format(DateTime.now()).toString();
+    boxTime.putAt(0, selectedTimezone);
+    timeDisplay = DateFormat('Hm').format(DateTime.now().toLocal()).toString();
     Timer.periodic(const Duration(seconds: 1), (Timer t) => getTime());
 
     super.initState();
@@ -54,6 +55,7 @@ class _HomeState extends State<Home> {
             children: [
               Expanded(
                 child: Container(
+                  padding: const EdgeInsets.all(40.0),
                   decoration: const BoxDecoration(
                       image: DecorationImage(
                           image: AssetImage("assets/images/Ex39Su.png"),
@@ -70,8 +72,11 @@ class _HomeState extends State<Home> {
                           ),
                         ),
                         Text(
-                          //'Location',
-                          selectedTimezone.mainCity as String,
+                          selectedTimezone.code.toString(),
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 16.0,
+                          ),
                         ),
                       ],
                     ),
@@ -110,10 +115,20 @@ class _HomeState extends State<Home> {
   }
 
   void getTime() {
-    final DateTime now = DateTime.now();
+    DateTime time = DateTime.now().toUtc();
+    String offset = selectedTimezone.offset!.replaceAll(RegExp('[UTC:]'), '');
+
+    int offsetHours = offset[0] != '-' && offset[0] != '+' ? int.parse(offset[0]) : int.parse(offset[1] + offset[2]);
+    int offsetMinutes = int.parse(offset[3] + offset[4]);
+    
+    if(offset[0] == '-') {
+      time = time.subtract(Duration(hours: offsetHours, minutes: offsetMinutes));
+    } else {
+      time = time.add(Duration(hours: offsetHours, minutes: offsetMinutes));
+    }
+
     setState(() {
-      timeDisplay = DateFormat('Hm').format(now).toString();
-      // print(selectedTimezone.mainCity);
+      timeDisplay = DateFormat('Hm').format(time).toString();
     });
   }
 }
