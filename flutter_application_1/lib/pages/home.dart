@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/pages/boxes.dart';
 import 'package:flutter_application_1/pages/time.dart';
@@ -32,8 +31,7 @@ class _HomeState extends State<Home> {
   }
 
   List<Widget> body = const [
-    Icon(Icons.access_time_filled),
-    Icon(Icons.bedtime),
+    Icon(Icons.settings),
     Icon(Icons.add_location),
   ];
 
@@ -98,8 +96,8 @@ class _HomeState extends State<Home> {
                 selectedItemColor: Colors.white,
                 items: const [
                   BottomNavigationBarItem(
-                    icon: Icon(Icons.bedtime),
-                    label: 'Theme',
+                    icon: Icon(Icons.settings),
+                    label: 'Settings',
                   ),
                   BottomNavigationBarItem(
                     icon: Icon(Icons.add_location),
